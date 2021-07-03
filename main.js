@@ -1,13 +1,14 @@
 const table = document.getElementById('life-canvas')
 const cellMatrix = []
+let simulation;
 
 function draw() {
-    for (let i = 0; i < 124; i++) {
+    for (let i = 0; i < 27; i++) {
       let row = document.createElement('tr')
       table.append(row)
       let matrixRow = []
 
-      for (let j = 0; j < 124; j++) {
+      for (let j = 0; j < 27; j++) {
         let cell = document.createElement('td')
         cell.setAttribute('id', `id-${i}-${j}`)
         cell.className = 'dead'
@@ -23,32 +24,49 @@ function switchCell(e) {
   const state = e.target.className
   const newState = state === 'dead' ? 'alive' : 'dead'
   e.target.className = newState
-  // setNextGeneration()
+}
+
+function simulateLife() {
+  simulation = setInterval(setNextGeneration,500)
+}
+
+function stopSimulation() {
+  clearInterval(simulation)
 }
 
 function setNextGeneration() {
+  const cellsToKill=[]
+  const cellsToResurrect=[]
   cellMatrix.forEach((matrixRow) => {
     matrixRow.forEach((cell) => {
-      const neighboursState = checkNeighboursState(cell)
-      // This is just a test check not the real rules
-      if(neighboursState.aliveCellCounter > neighboursState.deadCellCounter){
-        killCell(cell)
-      }else if(neighboursState.aliveCellCounter < neighboursState.deadCellCounter){
-        resurrectCell(cell)
+      const aliveNeighboursCount = countAliveNeighbours(cell)
+
+      const isAliveInNextGeneration = cell.className === 'dead' && aliveNeighboursCount === 3
+      const isDeadInNextGeneration = cell.className === 'alive' && ![2,3].includes(aliveNeighboursCount)
+      if(isDeadInNextGeneration){
+        cellsToKill.push(cell)
+      }else if(isAliveInNextGeneration){
+        cellsToResurrect.push(cell)
       }
     });
   });
+  killCells(cellsToKill)
+  resurrectCells(cellsToResurrect)
 }
 
-function killCell(cell) {
-  return cell.className = 'dead'
+function killCells(cells) {
+  cells.forEach((cell) => {
+    cell.className = 'dead'
+  });
 }
 
-function resurrectCell(cell) {
-  return cell.className = 'alive'
+function resurrectCells(cells) {
+  cells.forEach((cell) => {
+    cell.className = 'alive'
+  });
 }
 
-function checkNeighboursState(cell) {
+function countAliveNeighbours(cell) {
   const coordinates = getCoordinates(cell)
   const x = Number(coordinates[0])
   const y = Number(coordinates[1])
@@ -64,24 +82,21 @@ function checkNeighboursState(cell) {
     {x:x+1,y:y+1},
   ]
 
-  let aliveCellCounter = 0
-  let deadCellCounter = 0
+  let aliveNeighboursCounter = 0
 
   neighbours.forEach((neighbour) => {
     let state = ''
     // TODO: This check is not correct and also not readable
-    if(x-1 >= 0 && y-1 >= 0 && x+1 <= 123 && y+1 <= 123) {
+    if(x-1 >= 0 && y-1 >= 0 && x+1 <= 26 && y+1 <= 26) {
       state = cellMatrix[neighbour.x][neighbour.y]?.className
     }
 
-    if (state === 'dead'){
-      deadCellCounter++
-    } else if (state === 'alive') {
-      aliveCellCounter++
+    if (state === 'alive'){
+      aliveNeighboursCounter++
     }
   });
 
-return {aliveCellCounter,deadCellCounter}
+return aliveNeighboursCounter
 }
 
 function getCoordinates(cell) {

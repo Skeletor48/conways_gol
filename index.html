@@ -8,9 +8,13 @@
 </head>
 
 <body onload="draw();">
+  <h3>Life Prototype v.1</h3>
   <table id="life-canvas" cellspacing="0" cellpadding="0">
   <!-- <table id="life-canvas"> -->
   </table>
+  <button onclick="setNextGeneration();" style="background-color: #e7e7e7; color: black;;">Next Generation</button>
+  <button onclick="simulateLife();" style="background-color: #4CAF50;">Start Life</button>
+  <button onclick="stopSimulation();" style="background-color: #f44336;">Stop Life</button>
   <script src="./main.js"></script>
 </body>
 

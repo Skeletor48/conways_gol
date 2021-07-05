@@ -1,12 +1,11 @@
 #life-canvas {
-  border: none;
-  padding-bottom: 20px;
-  /* background-color: darkgrey; */
+  border-collapse: collapse;
 }
 
 td {
-  width: 15px;
-  height: 15px;
+  border: 0.5px solid black;
+  width: 8px;
+  height: 8px;
 }
 
 td.dead {
@@ -31,4 +30,31 @@ button {
 
 button:active {
   transform: translateY(4px);
+}
+
+.button-wrapper {
+  padding-top: 20px;
+  display: inline-grid;
+  grid-template-columns: repeat(2, [col-start] 1fr);
+  grid-gap: 10px;
+}
+
+#grid-toggle {
+  float:right;
+  /* color: red; */
+  cursor: pointer;
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+#grid-toggle.off {
+  color: grey;
+}
+
+#grid-toggle.on {
+  color: green;
+}
+
+#grid-toggle:active {
+  transform: scale(0.7);;
 }

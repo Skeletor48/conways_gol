@@ -3,18 +3,25 @@
 
 <head>
   <meta charset="utf-8">
+  <script src="https://kit.fontawesome.com/2ec7b52324.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="./main.css">
   <title>Conway's Game of Life</title>
 </head>
 
 <body onload="draw();">
-  <h3>Life Prototype v.1</h3>
-  <table id="life-canvas" cellspacing="0" cellpadding="0">
-  <!-- <table id="life-canvas"> -->
+  <i id='grid-toggle' onclick="toggleGrid();" class="fas fa-th fa-lg off"></i>
+  <h3>Life Prototype v.2</h3>
+  <h3 id='generation-counter'>Generation: #0</h3>
+
+  <table id="life-canvas">
   </table>
-  <button onclick="setNextGeneration();" style="background-color: #e7e7e7; color: black;;">Next Generation</button>
-  <button onclick="simulateLife();" style="background-color: #4CAF50;">Start Life</button>
-  <button onclick="stopSimulation();" style="background-color: #f44336;">Stop Life</button>
+  <div class="button-wrapper">
+    <button onclick="setNextGeneration();" style="background-color: #e7e7e7; color: black;">Next Generation</button>
+    <button onclick="clearTable();" style="background-color: black; color: white;">Clear Table</button>
+    <button onclick="simulateLife();" style="background-color: #4CAF50;">Start Life</button>
+    <button onclick="stopSimulation();" style="background-color: #f44336;">Stop Life</button>
+  </div>
+
   <script src="./main.js"></script>
 </body>
 
